@@ -1,176 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>My Code Projects</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family: "Fira Code", monospace;
-}
-
-body{
-  min-height:100vh;
-  background: linear-gradient(120deg,#0f2027,#203a43,#2c5364);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-}
-
-.app{
-  width:95%;
-  max-width:1000px;
-  height:600px;
-  background: rgba(0,0,0,0.4);
-  border-radius:16px;
-  display:grid;
-  grid-template-columns: 260px 1fr;
-  overflow:hidden;
-  backdrop-filter: blur(14px);
-}
-
-/* SIDEBAR */
-.sidebar{
-  background: rgba(0,0,0,0.55);
-  padding:15px;
-  display:flex;
-  flex-direction:column;
-}
-
-.sidebar h2{
-  font-size:1rem;
-  margin-bottom:10px;
-}
-
-.sidebar button{
-  padding:10px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-  background: linear-gradient(135deg,#00ffd5,#00b3ff);
-  margin-bottom:10px;
-}
-
-.project-list{
-  flex:1;
-  overflow:auto;
-}
-
-.project{
-  padding:8px;
-  border-radius:8px;
-  background: rgba(255,255,255,0.1);
-  margin-bottom:6px;
-  cursor:pointer;
-}
-
-.project:hover{
-  background: rgba(0,255,213,0.3);
-}
-
-/* EDITOR */
-.editor{
-  display:flex;
-  flex-direction:column;
-}
-
-.editor-header{
-  padding:12px;
-  background: rgba(0,0,0,0.6);
-  font-size:0.9rem;
-}
-
-textarea{
-  flex:1;
-  border:none;
-  outline:none;
-  resize:none;
-  padding:15px;
-  background:#0d1117;
-  color:#c9d1d9;
-  font-size:0.9rem;
-}
-
-.status{
-  padding:8px;
-  font-size:0.75rem;
-  background:#080b10;
-  color:#7ee787;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>My Project Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+    h1 { color: #38bdf8; }
+    input, textarea, button, select {
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+    textarea { height: 150px; }
+    button {
+      background: #38bdf8;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: #0ea5e9; }
+    .box {
+      background: #020617;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="app">
+<h1>📁 My Project Manager</h1>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h2>My Projects</h2>
-    <button onclick="newProject()">＋ New Project</button>
-    <div class="project-list" id="projectList"></div>
-  </div>
+<div class="box">
+  <h3>Create / Edit Project</h3>
+  <input id="projectName" placeholder="Project name">
+  <textarea id="projectData" placeholder="Write your project code or notes here..."></textarea>
+  <button onclick="saveProject()">💾 Save Project</button>
+</div>
 
-  <!-- EDITOR -->
-  <div class="editor">
-    <div class="editor-header" id="projectTitle">
-      No project opened
-    </div>
-    <textarea id="editor" placeholder="Write your code here..."></textarea>
-    <div class="status" id="status">Not saved</div>
-  </div>
-
+<div class="box">
+  <h3>Open Project</h3>
+  <select id="projectList"></select>
+  <button onclick="openProject()">📂 Open</button>
+  <button onclick="deleteProject()">🗑 Delete</button>
 </div>
 
 <script>
-let currentProject = null;
-
-function loadProjects(){
-  const list = document.getElementById("projectList");
-  list.innerHTML = "";
-  const projects = JSON.parse(localStorage.getItem("projects") || "{}");
-
-  for(const name in projects){
-    const div = document.createElement("div");
-    div.className = "project";
-    div.textContent = name;
-    div.onclick = () => openProject(name);
-    list.appendChild(div);
+  function loadProjects() {
+    const list = document.getElementById("projectList");
+    list.innerHTML = "";
+    for (let key in localStorage) {
+      if (key.startsWith("project_")) {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = key.replace("project_", "");
+        list.appendChild(opt);
+      }
+    }
   }
-}
 
-function newProject(){
-  const name = prompt("Project name?");
-  if(!name) return;
+  function saveProject() {
+    const name = document.getElementById("projectName").value;
+    const data = document.getElementById("projectData").value;
+    if (!name) return alert("Project name required!");
+    localStorage.setItem("project_" + name, data);
+    loadProjects();
+    alert("Project saved!");
+  }
 
-  const projects = JSON.parse(localStorage.getItem("projects") || "{}");
-  projects[name] = "";
-  localStorage.setItem("projects", JSON.stringify(projects));
+  function openProject() {
+    const key = document.getElementById("projectList").value;
+    if (!key) return;
+    document.getElementById("projectName").value = key.replace("project_", "");
+    document.getElementById("projectData").value = localStorage.getItem(key);
+  }
+
+  function deleteProject() {
+    const key = document.getElementById("projectList").value;
+    if (!key) return;
+    localStorage.removeItem(key);
+    loadProjects();
+    document.getElementById("projectName").value = "";
+    document.getElementById("projectData").value = "";
+  }
+
   loadProjects();
-}
-
-function openProject(name){
-  const projects = JSON.parse(localStorage.getItem("projects") || "{}");
-  currentProject = name;
-  document.getElementById("projectTitle").textContent = "Project: " + name;
-  document.getElementById("editor").value = projects[name];
-}
-
-document.getElementById("editor").addEventListener("input", () => {
-  if(!currentProject) return;
-  const projects = JSON.parse(localStorage.getItem("projects") || "{}");
-  projects[currentProject] = document.getElementById("editor").value;
-  localStorage.setItem("projects", JSON.stringify(projects));
-  document.getElementById("status").textContent = "Saved ✔";
-});
-
-loadProjects();
 </script>
 
 </body>
