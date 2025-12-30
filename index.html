@@ -1,94 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Project Manager</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      padding: 20px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Manager</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f172a;
+    font-family: Arial, sans-serif;
+    color: white;
+    padding: 15px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 800px;
+    background: #020617;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #38bdf8;
+    margin-bottom: 20px;
+  }
+
+  .box {
+    margin-bottom: 20px;
+  }
+
+  input, textarea, select, button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+  }
+
+  textarea {
+    min-height: 160px;
+    resize: vertical;
+  }
+
+  button {
+    background: #38bdf8;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #0ea5e9;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 22px;
     }
-    h1 { color: #38bdf8; }
-    input, textarea, button, select {
-      width: 100%;
-      margin: 6px 0;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 14px;
-    }
-    textarea { height: 150px; }
-    button {
-      background: #38bdf8;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover { background: #0ea5e9; }
-    .box {
-      background: #020617;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-  </style>
+  }
+</style>
 </head>
+
 <body>
 
-<h1>📁 My Project Manager</h1>
+<div class="container">
+  <h1>📁 My Project Manager</h1>
 
-<div class="box">
-  <h3>Create / Edit Project</h3>
-  <input id="projectName" placeholder="Project name">
-  <textarea id="projectData" placeholder="Write your project code or notes here..."></textarea>
-  <button onclick="saveProject()">💾 Save Project</button>
-</div>
+  <div class="box">
+    <input id="projectName" placeholder="Project name">
+    <textarea id="projectData" placeholder="Write your project code or notes..."></textarea>
+    <button onclick="saveProject()">💾 Save Project</button>
+  </div>
 
-<div class="box">
-  <h3>Open Project</h3>
-  <select id="projectList"></select>
-  <button onclick="openProject()">📂 Open</button>
-  <button onclick="deleteProject()">🗑 Delete</button>
+  <div class="box">
+    <select id="projectList"></select>
+    <div class="btn-group">
+      <button onclick="openProject()">📂 Open</button>
+      <button onclick="deleteProject()">🗑 Delete</button>
+    </div>
+  </div>
 </div>
 
 <script>
   function loadProjects() {
     const list = document.getElementById("projectList");
     list.innerHTML = "";
-    for (let key in localStorage) {
+    Object.keys(localStorage).forEach(key => {
       if (key.startsWith("project_")) {
         const opt = document.createElement("option");
         opt.value = key;
         opt.textContent = key.replace("project_", "");
         list.appendChild(opt);
       }
-    }
+    });
   }
 
   function saveProject() {
-    const name = document.getElementById("projectName").value;
-    const data = document.getElementById("projectData").value;
-    if (!name) return alert("Project name required!");
-    localStorage.setItem("project_" + name, data);
+    const name = projectName.value.trim();
+    if (!name) return alert("Project name required");
+    localStorage.setItem("project_" + name, projectData.value);
     loadProjects();
-    alert("Project saved!");
+    alert("Saved!");
   }
 
   function openProject() {
-    const key = document.getElementById("projectList").value;
+    const key = projectList.value;
     if (!key) return;
-    document.getElementById("projectName").value = key.replace("project_", "");
-    document.getElementById("projectData").value = localStorage.getItem(key);
+    projectName.value = key.replace("project_", "");
+    projectData.value = localStorage.getItem(key);
   }
 
   function deleteProject() {
-    const key = document.getElementById("projectList").value;
+    const key = projectList.value;
     if (!key) return;
     localStorage.removeItem(key);
     loadProjects();
-    document.getElementById("projectName").value = "";
-    document.getElementById("projectData").value = "";
+    projectName.value = "";
+    projectData.value = "";
   }
 
   loadProjects();
