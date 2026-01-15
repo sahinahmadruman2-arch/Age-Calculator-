@@ -1,142 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Manager</title>
-
-<style>
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0f172a;
-    font-family: Arial, sans-serif;
-    color: white;
-    padding: 15px;
-  }
-
-  .container {
-    width: 100%;
-    max-width: 800px;
-    background: #020617;
-    padding: 20px;
-    border-radius: 12px;
-  }
-
-  h1 {
-    text-align: center;
-    color: #38bdf8;
-    margin-bottom: 20px;
-  }
-
-  .box {
-    margin-bottom: 20px;
-  }
-
-  input, textarea, select, button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border-radius: 8px;
-    border: none;
-    font-size: 15px;
-  }
-
-  textarea {
-    min-height: 160px;
-    resize: vertical;
-  }
-
-  button {
-    background: #38bdf8;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #0ea5e9;
-  }
-
-  .btn-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 22px;
-    }
-  }
-</style>
+<title>Night Runner</title>
 </head>
+<body style="text-align:center;background:#ddd;">
 
-<body>
+<h2 id="info">Day Time - Collect Coins</h2>
 
-<div class="container">
-  <h1>📁 My Project Manager</h1>
-
-  <div class="box">
-    <input id="projectName" placeholder="Project name">
-    <textarea id="projectData" placeholder="Write your project code or notes..."></textarea>
-    <button onclick="saveProject()">💾 Save Project</button>
-  </div>
-
-  <div class="box">
-    <select id="projectList"></select>
-    <div class="btn-group">
-      <button onclick="openProject()">📂 Open</button>
-      <button onclick="deleteProject()">🗑 Delete</button>
-    </div>
-  </div>
-</div>
+<canvas id="game" width="800" height="400" style="border:3px solid black;background:#7ec850;"></canvas>
 
 <script>
-  function loadProjects() {
-    const list = document.getElementById("projectList");
-    list.innerHTML = "";
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith("project_")) {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = key.replace("project_", "");
-        list.appendChild(opt);
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const info = document.getElementById("info");
+
+let player = { x:50, y:200, size:20, speed:4 };
+let coins = [];
+let monsters = [];
+let day = true;
+let time = 0;
+let score = 0;
+
+for(let i=0;i<5;i++){
+  coins.push({x:Math.random()*760, y:Math.random()*360});
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key=="w") player.y -= player.speed;
+  if(e.key=="s") player.y += player.speed;
+  if(e.key=="a") player.x -= player.speed;
+  if(e.key=="d") player.x += player.speed;
+});
+
+function spawnMonster(){
+  monsters.push({x:800,y:Math.random()*360,size:20});
+}
+
+function loop(){
+  ctx.clearRect(0,0,800,400);
+
+  time++;
+  if(time > 600){
+    day = !day;
+    time = 0;
+    if(day){
+      info.innerText = "Day Time - Collect Coins";
+      monsters = [];
+      canvas.style.background="#7ec850";
+    }else{
+      info.innerText = "Night Time - Survive!";
+      canvas.style.background="#111";
+      spawnMonster();
+    }
+  }
+
+  // Player
+  ctx.fillStyle="blue";
+  ctx.fillRect(player.x,player.y,player.size,player.size);
+
+  // Coins
+  if(day){
+    ctx.fillStyle="gold";
+    for(let c of coins){
+      ctx.fillRect(c.x,c.y,10,10);
+      if(Math.abs(player.x-c.x)<20 && Math.abs(player.y-c.y)<20){
+        c.x=Math.random()*760;
+        c.y=Math.random()*360;
+        score++;
       }
-    });
+    }
   }
 
-  function saveProject() {
-    const name = projectName.value.trim();
-    if (!name) return alert("Project name required");
-    localStorage.setItem("project_" + name, projectData.value);
-    loadProjects();
-    alert("Saved!");
+  // Monsters
+  if(!day){
+    ctx.fillStyle="red";
+    for(let m of monsters){
+      m.x -= 2;
+      ctx.fillRect(m.x,m.y,m.size,m.size);
+      if(Math.abs(player.x-m.x)<20 && Math.abs(player.y-m.y)<20){
+        alert("Game Over! Score: "+score);
+        location.reload();
+      }
+    }
+    if(time % 120 == 0) spawnMonster();
   }
 
-  function openProject() {
-    const key = projectList.value;
-    if (!key) return;
-    projectName.value = key.replace("project_", "");
-    projectData.value = localStorage.getItem(key);
-  }
+  requestAnimationFrame(loop);
+}
 
-  function deleteProject() {
-    const key = projectList.value;
-    if (!key) return;
-    localStorage.removeItem(key);
-    loadProjects();
-    projectName.value = "";
-    projectData.value = "";
-  }
-
-  loadProjects();
+loop();
 </script>
 
 </body>
