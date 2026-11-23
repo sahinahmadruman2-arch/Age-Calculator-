@@ -1,146 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web 3D Engine v2</title>
-    <style>
-        body { margin: 0; display: flex; height: 100vh; background: #1a1a1a; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Sidebar Styling */
-        #sidebar { width: 250px; background: #252525; border-right: 1px solid #444; display: flex; flex-direction: column; padding: 10px; }
-        #hierarchy { flex-grow: 1; overflow-y: auto; margin-top: 10px; border: 1px solid #333; background: #111; padding: 5px; }
-        .scene-item { padding: 8px; margin-bottom: 5px; background: #333; cursor: pointer; border-radius: 4px; font-size: 14px; }
-        .scene-item:hover { background: #444; }
-        .scene-item.active { border-left: 4px solid #0078d4; background: #3a3a3a; }
-
-        /* Toolbar */
-        .btn { background: #0078d4; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-bottom: 10px; }
-        .btn:hover { background: #005a9e; }
-
-        /* Viewport */
-        #viewport { flex-grow: 1; position: relative; }
-        canvas { display: block; }
-    </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d18"><title>YES OS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap');
+:root{--bg:#090d18;--panel:rgba(17,24,42,.92);--panel2:#151e32;--line:#ffffff18;--text:#f4f6ff;--muted:#9da9c3;--accent:#8b7cff;--shadow:0 24px 80px #0009}
+*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden}body{font:14px 'DM Sans',sans-serif;color:var(--text);background:var(--bg)}button,input,textarea{font:inherit}button{color:inherit;cursor:pointer;border:0}#desktop{position:fixed;inset:0;background:radial-gradient(ellipse at 18% 18%,#394b9b88,transparent 38%),radial-gradient(ellipse at 85% 75%,#7b3c9a66,transparent 36%),linear-gradient(135deg,#10182c,#080d18 65%,#17102b);overflow:hidden}#desktop:before{content:"";position:absolute;inset:0;opacity:.14;background-image:linear-gradient(#ffffff12 1px,transparent 1px),linear-gradient(90deg,#ffffff12 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(transparent,#000)}
+#desktopIcons{position:absolute;top:22px;left:20px;display:grid;gap:12px;z-index:1}.desk-icon{width:76px;min-height:78px;background:transparent;border-radius:13px;display:grid;justify-items:center;align-content:center;gap:6px;padding:8px 4px;color:#e8ebff;text-shadow:0 2px 8px #0008}.desk-icon:hover{background:#ffffff16}.desk-icon .glyph{font-size:28px}.desk-icon small{font-size:11px}
+#topbar{position:absolute;top:0;left:0;right:0;height:34px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:#080c16a8;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff0d;z-index:5;font-size:12px;color:#dce2f8}#topbar .brand{font-weight:800;letter-spacing:1.5px}#topbar .status{display:flex;gap:15px;align-items:center;color:#c3cbe0}
+#dock{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);height:62px;padding:8px 12px;display:flex;gap:7px;align-items:center;border:1px solid #ffffff20;border-radius:19px;background:#10182bd9;backdrop-filter:blur(24px);box-shadow:var(--shadow);z-index:20}.dock-btn{width:44px;height:44px;border-radius:13px;background:transparent;font-size:22px;position:relative}.dock-btn:hover{background:#ffffff18;transform:translateY(-3px)}.dock-btn.active:after{content:"";position:absolute;bottom:2px;left:18px;width:7px;height:3px;border-radius:5px;background:var(--accent)}#startMenu{display:none;position:absolute;z-index:30;bottom:88px;left:50%;transform:translateX(-50%);width:min(380px,calc(100vw - 24px));padding:16px;border:1px solid var(--line);border-radius:20px;background:var(--panel);backdrop-filter:blur(24px);box-shadow:var(--shadow)}#startMenu.show{display:block}.start-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.start-head strong{font-size:17px}.search{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:#080e1c;color:var(--text);outline:none}.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.app-tile{padding:13px 6px;border-radius:12px;background:#ffffff08;text-align:center}.app-tile:hover{background:#ffffff17}.app-tile span{display:block;font-size:25px;margin-bottom:5px}.app-tile small{color:var(--muted)}
+#windows{position:absolute;inset:35px 0 86px;z-index:4;pointer-events:none}.window{position:absolute;top:7%;left:50%;transform:translateX(-50%);width:min(760px,calc(100vw - 32px));height:min(520px,calc(100% - 24px));min-width:280px;min-height:210px;display:flex;flex-direction:column;border:1px solid #ffffff25;border-radius:15px;background:var(--panel);backdrop-filter:blur(25px);box-shadow:var(--shadow);overflow:hidden;pointer-events:auto}.window.focus{border-color:#a69bff88;box-shadow:0 25px 90px #000a,0 0 0 1px #8b7cff22}.window.max{top:0!important;left:0!important;transform:none!important;width:100%!important;height:100%!important;border-radius:0}.titlebar{height:43px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#ffffff08;border-bottom:1px solid var(--line);cursor:grab;user-select:none}.titlebar:active{cursor:grabbing}.win-title{display:flex;align-items:center;gap:9px;font-weight:700}.win-title span{font-size:17px}.win-actions{display:flex;gap:6px}.win-actions button{width:27px;height:25px;border-radius:7px;background:#ffffff0b;color:#cbd3e8}.win-actions button:hover{background:#ffffff20}.win-actions .close:hover{background:#e45c6a}.content{padding:17px;overflow:auto;flex:1}.muted{color:var(--muted)}.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}.btn{padding:9px 12px;border-radius:9px;background:#ffffff12;border:1px solid var(--line)}.btn:hover{background:#ffffff20}.btn.primary{background:var(--accent);color:white;border-color:transparent}.field{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:#080e1b;color:var(--text);outline:none}.note-area{width:100%;height:calc(100% - 42px);min-height:180px;resize:none;background:#0b1120;border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--text);line-height:1.6;outline:none}.calc{max-width:330px;margin:auto}.calc-display{padding:20px 14px;text-align:right;font:28px 'DM Mono',monospace;background:#080e1b;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;min-height:70px;overflow:auto}.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.calc-grid button{height:52px;border-radius:10px;background:#ffffff10;font-size:17px}.calc-grid button:hover{background:#ffffff22}.calc-grid .op{color:#b7adff}.calc-grid .equal{background:var(--accent)}.file-row{display:flex;align-items:center;gap:10px;padding:11px;border-bottom:1px solid var(--line)}.file-row .file-icon{font-size:22px}.file-row .file-name{flex:1}.file-row button{background:#ffffff10;border-radius:7px;padding:6px 9px}.settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.switch{accent-color:var(--accent);width:18px;height:18px}.terminal{height:100%;display:flex;flex-direction:column;background:#050912;border-radius:10px;padding:12px;font:12px 'DM Mono',monospace}.terminal-out{flex:1;overflow:auto;white-space:pre-wrap;color:#b9f3cb;line-height:1.6}.terminal-form{display:flex;gap:8px}.terminal-form span{color:#a99cff}.terminal-form input{flex:1;background:transparent;border:0;color:#fff;outline:none;font:inherit}.toast{position:absolute;right:18px;top:48px;z-index:50;background:var(--panel);border:1px solid var(--line);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);animation:toastin .2s ease}.hidden{display:none!important}@keyframes toastin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+body.light{--panel:rgba(239,243,255,.94);--panel2:#e9edfb;--line:#18213a22;--text:#172039;--muted:#5e6b87;--shadow:0 24px 80px #101a3833}body.light #topbar{background:#e9edfac9;color:#18213a}body.light #dock{background:#e8edfbdf;border-color:#ffffff}body.light .search,body.light .field,body.light .note-area{background:#f8faff;color:#172039}body.light .calc-display{background:#f8faff;color:#172039}body.light .terminal{background:#111827}
+@media(max-width:600px){#desktopIcons{top:48px;left:9px;grid-template-columns:repeat(2,70px)}.window{top:2%!important;left:50%!important;width:calc(100vw - 12px)!important;height:calc(100% - 6px)!important;transform:translateX(-50%)!important;min-height:0}.window.max{left:0!important;transform:none!important;width:100%!important;height:100%!important}.content{padding:12px}#dock{bottom:8px;height:57px;max-width:calc(100vw - 18px);overflow-x:auto}.dock-btn{flex:0 0 40px;width:40px;height:40px}#windows{inset:35px 0 72px}}
+</style></head>
 <body>
-
-    <div id="sidebar">
-        <h3>Scene Hierarchy</h3>
-        <button class="btn" id="addCube">Add Cube +</button>
-        <div id="hierarchy">
-            </div>
-        <p style="font-size: 11px; color: #888;">Select an item to edit in the right panel</p>
-    </div>
-
-    <div id="viewport"></div>
-
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "dat.gui": "https://unpkg.com/dat.gui@0.7.9/build/dat.gui.module.js"
-            }
-        }
-    </script>
-
-    <script type="module">
-        import * as THREE from 'three';
-        import { GUI } from 'dat.gui';
-
-        // ENGINE STATE
-        const objects = [];
-        let selectedObject = null;
-        let cubeCount = 0;
-
-        // 1. SCENE SETUP
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, (window.innerWidth - 250) / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth - 250, window.innerHeight);
-        document.getElementById('viewport').appendChild(renderer.domElement);
-
-        const light = new THREE.DirectionalLight(0xffffff, 3);
-        light.position.set(5, 5, 5);
-        scene.add(light);
-        scene.add(new THREE.AmbientLight(0x404040));
-        camera.position.set(3, 3, 5);
-        camera.lookAt(0, 0, 0);
-
-        // 2. GUI SETUP
-        const gui = new GUI({ autoPlace: false });
-        document.getElementById('sidebar').appendChild(gui.domElement);
-        const transformFolder = gui.addFolder('Object Inspector');
-        transformFolder.open();
-
-        // 3. ENGINE FUNCTIONS
-        function createCube() {
-            cubeCount++;
-            const geometry = new THREE.BoxGeometry(1, 1, 1);
-            const material = new THREE.MeshStandardMaterial({ color: Math.random() * 0xffffff });
-            const cube = new THREE.Mesh(geometry, material);
-            
-            cube.name = `Cube_${cubeCount}`;
-            cube.position.set(Math.random() * 2 - 1, Math.random() * 2 - 1, 0);
-            
-            scene.add(cube);
-            objects.push(cube);
-            updateHierarchyUI();
-            selectObject(cube);
-        }
-
-        function updateHierarchyUI() {
-            const container = document.getElementById('hierarchy');
-            container.innerHTML = '';
-            objects.forEach(obj => {
-                const div = document.createElement('div');
-                div.className = `scene-item ${selectedObject === obj ? 'active' : ''}`;
-                div.innerText = obj.name;
-                div.onclick = () => selectObject(obj);
-                container.appendChild(div);
-            });
-        }
-
-        function selectObject(obj) {
-            selectedObject = obj;
-            updateHierarchyUI();
-
-            // Refresh GUI for the new selected object
-            transformFolder.__controllers.forEach(c => transformFolder.remove(c));
-            
-            // Allow changing the name!
-            const nameControl = { name: obj.name };
-            transformFolder.add(nameControl, 'name').name('Object Name').onChange(v => {
-                obj.name = v;
-                updateHierarchyUI();
-            });
-
-            transformFolder.add(obj.position, 'x', -5, 5).name('Pos X');
-            transformFolder.add(obj.position, 'y', -5, 5).name('Pos Y');
-            transformFolder.add(obj.rotation, 'y', 0, Math.PI * 2).name('Rotation');
-            transformFolder.addColor({ color: obj.material.color.getHex() }, 'color').onChange(v => {
-                obj.material.color.set(v);
-            });
-        }
-
-        // 4. EVENT LISTENERS
-        document.getElementById('addCube').addEventListener('click', createCube);
-
-        window.addEventListener('resize', () => {
-            const width = window.innerWidth - 250;
-            camera.aspect = width / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, window.innerHeight);
-        });
-
-        // 5. START ENGINE
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-        
-        createCube(); // Start with one cube
-        animate();
-    </script>
-</body>
-</html>
+<div id="desktop">
+ <div id="topbar"><div class="brand">✦ YES OS</div><div class="status"><span id="topDate"></span><span>◉ Connected</span><span>⌁ 100%</span></div></div>
+ <div id="desktopIcons">
+  <button class="desk-icon" data-app="files"><span class="glyph">📁</span><small>Files</small></button>
+  <button class="desk-icon" data-app="notes"><span class="glyph">📝</span><small>Notes</small></button>
+  <button class="desk-icon" data-app="calculator"><span class="glyph">🧮</span><small>Calculator</small></button>
+  <button class="desk-icon" data-app="terminal"><span class="glyph">⌨️</span><small>Terminal</small></button>
+ </div>
+ <div id="windows"></div>
+ <div id="startMenu"><div class="start-head"><strong>YES OS Launcher</strong><span class="muted">Apps</span></div><input class="search" id="appSearch" placeholder="Search apps..."><div class="app-grid" id="appGrid"></div></div>
+ <div id="dock">
+  <button class="dock-btn" id="startBtn" title="Launcher">✦</button>
+  <button class="dock-btn" data-app="files" title="Files">📁</button>
+  <button class="dock-btn" data-app="notes" title="Notes">📝</button>
+  <button class="dock-btn" data-app="calculator" title="Calculator">🧮</button>
+  <button class="dock-btn" data-app="terminal" title="Terminal">⌨️</button>
+  <button class="dock-btn" data-app="settings" title="Settings">⚙️</button>
+ </div>
+ <div id="toast" class="toast hidden"></div>
+</div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const APPS={
+ files:{name:'File Manager',icon:'📁',width:620,render:filesUI},
+ notes:{name:'Notes',icon:'📝',width:600,render:notesUI},
+ calculator:{name:'Calculator',icon:'🧮',width:360,render:calcUI},
+ terminal:{name:'Terminal',icon:'⌨️',width:570,render:terminalUI},
+ settings:{name:'Settings',icon:'⚙️',width:540,render:settingsUI},
+ about:{name:'About YES OS',icon:'✦',width:430,render:aboutUI}
+};
+let z=10,winSeq=0,windows=new Map(),active=null;
+const store={get(k,d){try{const v=localStorage.getItem('yesos:'+k);return v===null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem('yesos:'+k,JSON.stringify(v))}catch{notify('Storage unavailable in this browser')}}};
+function notify(msg){const t=$('#toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.classList.add('hidden'),2400)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function openApp(id){if(!APPS[id])return;const existing=[...windows.values()].find(w=>w.app===id&&!w.closed);if(existing){if(existing.min){existing.el.classList.remove('hidden');existing.min=false}focus(existing.id);return}
+ const app=APPS[id],wid='w'+(++winSeq),el=document.createElement('section');el.className='window';el.dataset.id=wid;el.style.width=`min(${app.width}px, calc(100vw - 24px))`;el.style.height=id==='calculator'?'450px':'min(520px, calc(100% - 20px))';el.style.left=`calc(50% + ${(windows.size%4)*16}px)`;el.style.top=`${7+(windows.size%4)*4}%`;
+ el.innerHTML=`<div class="titlebar"><div class="win-title"><span>${app.icon}</span>${app.name}</div><div class="win-actions"><button data-action="min" title="Minimize">−</button><button data-action="max" title="Maximize">□</button><button class="close" data-action="close" title="Close">×</button></div></div><div class="content">${app.render()}</div>`;
+ $('#windows').append(el);const obj={id:wid,app:id,el,min:false,max:false,closed:false};windows.set(wid,obj);wireWindow(obj);focus(wid);if(id==='terminal')initTerminal(el);if(id==='notes')initNotes(el);if(id==='settings')initSettings(el);if(id==='files')initFiles(el);
+}
+function focus(id){const w=windows.get(id);if(!w)return;active=id;windows.forEach(x=>x.el.classList.toggle('focus',x.id===id));w.el.style.zIndex=++z;$$('.dock-btn[data-app]').forEach(b=>b.classList.toggle('active',b.dataset.app===w.app))}
+function wireWindow(w){const el=w.el;el.addEventListener('pointerdown',()=>focus(w.id));el.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const a=b.dataset.action;if(a==='close'){el.remove();w.closed=true;windows.delete(w.id)}if(a==='min'){el.classList.add('hidden');w.min=true}if(a==='max'){w.max=!w.max;el.classList.toggle('max',w.max)}}));
+ const bar=el.querySelector('.titlebar');let drag=null;bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||w.max||innerWidth<600)return;focus(w.id);const r=el.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top};bar.setPointerCapture(e.pointerId)});bar.addEventListener('pointermove',e=>{if(!drag)return;const x=Math.max(0,Math.min(innerWidth-el.offsetWidth,e.clientX-drag.x));const y=Math.max(35,Math.min(innerHeight-110,e.clientY-drag.y));el.style.left=x+'px';el.style.top=(y-35)+'px';el.style.transform='none'});bar.addEventListener('pointerup',()=>drag=null);bar.addEventListener('lostpointercapture',()=>drag=null);
+}
+function filesUI(){return `<div class="toolbar"><button class="btn primary" id="newFile">＋ New note</button><span class="muted">Local files · stored in this browser</span></div><div id="fileList"></div>`}
+function initFiles(el){const list=el.querySelector('#fileList');function draw(){const notes=store.get('notes',[]);list.innerHTML=notes.length?notes.map(n=>`<div class="file-row"><span class="file-icon">📄</span><span class="file-name">${esc(n.title||'Untitled note')}<br><small class="muted">${new Date(n.updated||Date.now()).toLocaleString()}</small></span><button data-open="${esc(n.id)}">Open</button><button data-del="${esc(n.id)}">Delete</button></div>`).join(''):'<p class="muted">No saved notes yet. Create one to get started.</p>'}
+ el.querySelector('#newFile').onclick=()=>{const notes=store.get('notes',[]),id='n'+Date.now();notes.unshift({id,title:'Untitled note',body:'',updated:Date.now()});store.set('notes',notes);draw();openApp('notes')};list.addEventListener('click',e=>{const op=e.target.dataset.open,del=e.target.dataset.del;if(op){store.set('openNote',op);openApp('notes')}if(del){store.set('notes',store.get('notes',[]).filter(n=>n.id!==del));draw();notify('Note deleted')}});draw()}
+function notesUI(){return `<div class="toolbar"><input class="field" id="noteTitle" placeholder="Note title" style="flex:1"><span class="muted" id="saveStatus">Saved locally</span></div><textarea class="note-area" id="noteBody" placeholder="Start writing..."></textarea>`}
+function initNotes(el){const title=el.querySelector('#noteTitle'),body=el.querySelector('#noteBody'),notes=store.get('notes',[]);let id=store.get('openNote',null),n=notes.find(x=>x.id===id);if(!n){id='n'+Date.now();n={id,title:'',body:'',updated:Date.now()};notes.unshift(n);store.set('notes',notes);store.set('openNote',id)}title.value=n.title;body.value=n.body;let timer;function save(){const all=store.get('notes',[]),idx=all.findIndex(x=>x.id===id),entry={id,title:title.value||'Untitled note',body:body.value,updated:Date.now()};if(idx>=0)all[idx]=entry;else all.unshift(entry);store.set('notes',all);el.querySelector('#saveStatus').textContent='Saved';}function changed(){el.querySelector('#saveStatus').textContent='Saving…';clearTimeout(timer);timer=setTimeout(save,250)}title.addEventListener('input',changed);body.addEventListener('input',changed);el.querySelector('.content').addEventListener('focusout',save)}
+function calcUI(){return `<div class="calc"><div class="calc-display" id="calcDisplay" aria-live="polite">0</div><div class="calc-grid">${['C','⌫','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','±','0','.','='].map((x,i)=>`<button class="${[3,7,11,15].includes(i)?'op':''} ${x==='='?'equal':''}" data-key="${x}">${x}</button>`).join('')}</div></div>`}
+function terminalUI(){return `<div class="terminal"><div class="terminal-out" id="termOut">YES OS Terminal 1.0\nType <b>help</b> to see available commands.\n</div><form class="terminal-form" id="termForm"><span>visitor@yesos:~$</span><input id="termInput" autocomplete="off" spellcheck="false" aria-label="Terminal command"></form></div>`}
+function initTerminal(el){const out=el.querySelector('#termOut'),form=el.querySelector('#termForm'),input=el.querySelector('#termInput');const print=s=>{out.innerHTML+=esc(s)+'\n';out.scrollTop=out.scrollHeight};form.addEventListener('submit',e=>{e.preventDefault();const cmd=input.value.trim();input.value='';print('visitor@yesos:~$ '+cmd);const [c,...args]=cmd.split(/\s+/);switch(c.toLowerCase()){case'':break;case'help':print('help  about  date  clear  echo [text]  apps  whoami');break;case'about':print('YES OS — a lightweight browser desktop.');break;case'date':print(new Date().toString());break;case'clear':out.textContent='';break;case'echo':print(args.join(' '));break;case'apps':print(Object.keys(APPS).join(', '));break;case'whoami':print('visitor');break;default:print('Command not found: '+c+'. Type help.')}})}
+function settingsUI(){return `<h3 style="margin-top:0">Personalization</h3><div class="settings-row"><div><b>Light appearance</b><div class="muted">Switch between dark and light mode</div></div><input class="switch" type="checkbox" id="lightToggle"></div><div class="settings-row"><div><b>Accent color</b><div class="muted">Change interface highlight</div></div><input type="color" id="accentColor" value="${esc(store.get('accent','#8b7cff'))}" style="width:40px;height:30px;background:transparent;border:0"></div><div class="settings-row"><div><b>Reset settings</b><div class="muted">Restore default appearance</div></div><button class="btn" id="resetSettings">Reset</button></div><p class="muted">YES OS runs locally in your browser. Notes and preferences stay in this browser's local storage.</p>`}
+function initSettings(el){const light=el.querySelector('#lightToggle'),color=el.querySelector('#accentColor');light.checked=store.get('light',false);light.onchange=()=>{store.set('light',light.checked);document.body.classList.toggle('light',light.checked)};color.oninput=()=>{store.set('accent',color.value);document.documentElement.style.setProperty('--accent',color.value)};el.querySelector('#resetSettings').onclick=()=>{store.set('light',false);store.set('accent','#8b7cff');document.body.classList.remove('light');document.documentElement.style.setProperty('--accent','#8b7cff');light.checked=false;color.value='#8b7cff';notify('Settings reset')}}
+function aboutUI(){return `<div style="text-align:center;padding:15px"><div style="font-size:52px">✦</div><h2>YES OS</h2><p class="muted">A tiny desktop environment in one HTML file.</p><p>Version 1.0 · Browser edition</p><p class="muted">Built with HTML, CSS and vanilla JavaScript. No server required.</p></div>`}
+function initClock(){const tick=()=>{$('#topDate').textContent=new Date().toLocaleString([],{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})};tick();setInterval(tick,1000)}
+function initCalc(){let expr='0',fresh=true;const display=()=>$('#calcDisplay')&&($('#calcDisplay').textContent=expr);$('#windows').addEventListener('click',e=>{const b=e.target.closest('[data-key]');if(!b)return;const k=b.dataset.key;try{if(k==='C'){expr='0';fresh=true}else if(k==='⌫'){expr=expr.length>1?expr.slice(0,-1):'0'}else if(k==='±'){expr=String(-Number(expr))}else if(k==='='){const safe=expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');if(!/^[0-9+\-*/%.() ]+$/.test(safe))throw Error();const result=Function('"use strict";return ('+safe+')')();if(!Number.isFinite(result))throw Error();expr=String(Number(result.toPrecision(12)));fresh=true}else if(k==='%'){expr=String(Number(expr)/100)}else{if(fresh&&/[0-9.]/.test(k))expr='';expr=(expr==='0'&&/[0-9]/.test(k))?k:expr+k;fresh=false}display()}catch{expr='Error';fresh=true;display()}})}
+function buildLauncher(){const grid=$('#appGrid');function render(q=''){grid.innerHTML=Object.entries(APPS).filter(([id,a])=>(id+' '+a.name).toLowerCase().includes(q.toLowerCase())).map(([id,a])=>`<button class="app-tile" data-launch="${id}"><span>${a.icon}</span><small>${a.name}</small></button>`).join('')||'<p class="muted">No apps found.</p>'}render();$('#appSearch').addEventListener('input',e=>render(e.target.value));grid.addEventListener('click',e=>{const b=e.target.closest('[data-launch]');if(b){openApp(b.dataset.launch);$('#startMenu').classList.remove('show')}})}
+$('#startBtn').addEventListener('click',()=>$('#startMenu').classList.toggle('show'));$$('[data-app]').forEach(b=>b.addEventListener('click',()=>openApp(b.dataset.app)));$('#desktop').addEventListener('dblclick',e=>{const b=e.target.closest('[data-app]');if(b)openApp(b.dataset.app)});document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#startMenu').classList.add('show');$('#appSearch').focus()}if(e.key==='Escape')$('#startMenu').classList.remove('show');if(e.altKey&&e.key==='F4'&&active){e.preventDefault();const w=windows.get(active);if(w){w.el.remove();windows.delete(active);active=null}}});
+document.addEventListener('click',e=>{if(!e.target.closest('#startMenu,#startBtn'))$('#startMenu').classList.remove('show')});
+document.body.classList.toggle('light',store.get('light',false));document.documentElement.style.setProperty('--accent',store.get('accent','#8b7cff'));buildLauncher();initClock();initCalc();openApp('about');
+</script></body></html>
