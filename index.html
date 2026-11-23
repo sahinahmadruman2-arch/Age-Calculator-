@@ -2,78 +2,261 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090d18"><title>YES OS</title>
+<meta name="theme-color" content="#0b1020"><title>YES Engine — Browser Game Studio</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap');
-:root{--bg:#090d18;--panel:rgba(17,24,42,.92);--panel2:#151e32;--line:#ffffff18;--text:#f4f6ff;--muted:#9da9c3;--accent:#8b7cff;--shadow:0 24px 80px #0009}
-*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden}body{font:14px 'DM Sans',sans-serif;color:var(--text);background:var(--bg)}button,input,textarea{font:inherit}button{color:inherit;cursor:pointer;border:0}#desktop{position:fixed;inset:0;background:radial-gradient(ellipse at 18% 18%,#394b9b88,transparent 38%),radial-gradient(ellipse at 85% 75%,#7b3c9a66,transparent 36%),linear-gradient(135deg,#10182c,#080d18 65%,#17102b);overflow:hidden}#desktop:before{content:"";position:absolute;inset:0;opacity:.14;background-image:linear-gradient(#ffffff12 1px,transparent 1px),linear-gradient(90deg,#ffffff12 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(transparent,#000)}
-#desktopIcons{position:absolute;top:22px;left:20px;display:grid;gap:12px;z-index:1}.desk-icon{width:76px;min-height:78px;background:transparent;border-radius:13px;display:grid;justify-items:center;align-content:center;gap:6px;padding:8px 4px;color:#e8ebff;text-shadow:0 2px 8px #0008}.desk-icon:hover{background:#ffffff16}.desk-icon .glyph{font-size:28px}.desk-icon small{font-size:11px}
-#topbar{position:absolute;top:0;left:0;right:0;height:34px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:#080c16a8;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff0d;z-index:5;font-size:12px;color:#dce2f8}#topbar .brand{font-weight:800;letter-spacing:1.5px}#topbar .status{display:flex;gap:15px;align-items:center;color:#c3cbe0}
-#dock{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);height:62px;padding:8px 12px;display:flex;gap:7px;align-items:center;border:1px solid #ffffff20;border-radius:19px;background:#10182bd9;backdrop-filter:blur(24px);box-shadow:var(--shadow);z-index:20}.dock-btn{width:44px;height:44px;border-radius:13px;background:transparent;font-size:22px;position:relative}.dock-btn:hover{background:#ffffff18;transform:translateY(-3px)}.dock-btn.active:after{content:"";position:absolute;bottom:2px;left:18px;width:7px;height:3px;border-radius:5px;background:var(--accent)}#startMenu{display:none;position:absolute;z-index:30;bottom:88px;left:50%;transform:translateX(-50%);width:min(380px,calc(100vw - 24px));padding:16px;border:1px solid var(--line);border-radius:20px;background:var(--panel);backdrop-filter:blur(24px);box-shadow:var(--shadow)}#startMenu.show{display:block}.start-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.start-head strong{font-size:17px}.search{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:#080e1c;color:var(--text);outline:none}.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.app-tile{padding:13px 6px;border-radius:12px;background:#ffffff08;text-align:center}.app-tile:hover{background:#ffffff17}.app-tile span{display:block;font-size:25px;margin-bottom:5px}.app-tile small{color:var(--muted)}
-#windows{position:absolute;inset:35px 0 86px;z-index:4;pointer-events:none}.window{position:absolute;top:7%;left:50%;transform:translateX(-50%);width:min(760px,calc(100vw - 32px));height:min(520px,calc(100% - 24px));min-width:280px;min-height:210px;display:flex;flex-direction:column;border:1px solid #ffffff25;border-radius:15px;background:var(--panel);backdrop-filter:blur(25px);box-shadow:var(--shadow);overflow:hidden;pointer-events:auto}.window.focus{border-color:#a69bff88;box-shadow:0 25px 90px #000a,0 0 0 1px #8b7cff22}.window.max{top:0!important;left:0!important;transform:none!important;width:100%!important;height:100%!important;border-radius:0}.titlebar{height:43px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#ffffff08;border-bottom:1px solid var(--line);cursor:grab;user-select:none}.titlebar:active{cursor:grabbing}.win-title{display:flex;align-items:center;gap:9px;font-weight:700}.win-title span{font-size:17px}.win-actions{display:flex;gap:6px}.win-actions button{width:27px;height:25px;border-radius:7px;background:#ffffff0b;color:#cbd3e8}.win-actions button:hover{background:#ffffff20}.win-actions .close:hover{background:#e45c6a}.content{padding:17px;overflow:auto;flex:1}.muted{color:var(--muted)}.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}.btn{padding:9px 12px;border-radius:9px;background:#ffffff12;border:1px solid var(--line)}.btn:hover{background:#ffffff20}.btn.primary{background:var(--accent);color:white;border-color:transparent}.field{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--line);background:#080e1b;color:var(--text);outline:none}.note-area{width:100%;height:calc(100% - 42px);min-height:180px;resize:none;background:#0b1120;border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--text);line-height:1.6;outline:none}.calc{max-width:330px;margin:auto}.calc-display{padding:20px 14px;text-align:right;font:28px 'DM Mono',monospace;background:#080e1b;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;min-height:70px;overflow:auto}.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.calc-grid button{height:52px;border-radius:10px;background:#ffffff10;font-size:17px}.calc-grid button:hover{background:#ffffff22}.calc-grid .op{color:#b7adff}.calc-grid .equal{background:var(--accent)}.file-row{display:flex;align-items:center;gap:10px;padding:11px;border-bottom:1px solid var(--line)}.file-row .file-icon{font-size:22px}.file-row .file-name{flex:1}.file-row button{background:#ffffff10;border-radius:7px;padding:6px 9px}.settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.switch{accent-color:var(--accent);width:18px;height:18px}.terminal{height:100%;display:flex;flex-direction:column;background:#050912;border-radius:10px;padding:12px;font:12px 'DM Mono',monospace}.terminal-out{flex:1;overflow:auto;white-space:pre-wrap;color:#b9f3cb;line-height:1.6}.terminal-form{display:flex;gap:8px}.terminal-form span{color:#a99cff}.terminal-form input{flex:1;background:transparent;border:0;color:#fff;outline:none;font:inherit}.toast{position:absolute;right:18px;top:48px;z-index:50;background:var(--panel);border:1px solid var(--line);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);animation:toastin .2s ease}.hidden{display:none!important}@keyframes toastin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-body.light{--panel:rgba(239,243,255,.94);--panel2:#e9edfb;--line:#18213a22;--text:#172039;--muted:#5e6b87;--shadow:0 24px 80px #101a3833}body.light #topbar{background:#e9edfac9;color:#18213a}body.light #dock{background:#e8edfbdf;border-color:#ffffff}body.light .search,body.light .field,body.light .note-area{background:#f8faff;color:#172039}body.light .calc-display{background:#f8faff;color:#172039}body.light .terminal{background:#111827}
-@media(max-width:600px){#desktopIcons{top:48px;left:9px;grid-template-columns:repeat(2,70px)}.window{top:2%!important;left:50%!important;width:calc(100vw - 12px)!important;height:calc(100% - 6px)!important;transform:translateX(-50%)!important;min-height:0}.window.max{left:0!important;transform:none!important;width:100%!important;height:100%!important}.content{padding:12px}#dock{bottom:8px;height:57px;max-width:calc(100vw - 18px);overflow-x:auto}.dock-btn{flex:0 0 40px;width:40px;height:40px}#windows{inset:35px 0 72px}}
-</style></head>
+:root{--bg:#0b1020;--surface:#111a2c;--surface2:#172238;--surface3:#1d2a43;--line:#ffffff13;--text:#edf2ff;--muted:#92a1bd;--accent:#8b7cff;--green:#4bd6a0;--red:#ff7185;--yellow:#ffc66d;--shadow:0 18px 60px #0007}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font:13px 'DM Sans',sans-serif}button,input,textarea,select{font:inherit}button{color:inherit;cursor:pointer;border:0}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#app{height:100%;display:flex;flex-direction:column;background:radial-gradient(ellipse at 80% -20%,#5548a322,transparent 45%),var(--bg)}
+.topbar{height:54px;flex:none;display:flex;align-items:center;gap:14px;padding:0 16px;border-bottom:1px solid var(--line);background:#0d1424;z-index:5}.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:.2px;white-space:nowrap}.brand-mark{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#9d8cff,#5b65d9);box-shadow:0 5px 20px #7465ed55}.project-name{color:var(--muted);border-left:1px solid var(--line);padding-left:14px}.top-spacer{flex:1}.status{color:var(--muted);font-size:11px;white-space:nowrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:8px 11px;border-radius:8px;background:#ffffff0b;border:1px solid var(--line);font-weight:600;transition:background .15s,transform .15s,border-color .15s}.btn:hover{background:#ffffff17;border-color:#ffffff25}.btn:active{transform:scale(.97)}.btn.primary{background:var(--accent);border-color:transparent;color:white}.btn.primary:hover{background:#9a8cff}.btn.play{background:#1c9b70;color:#fff;border-color:#1c9b70}.btn.danger{color:#ff9aa8}.btn.small{padding:6px 8px;font-size:11px}
+.toolbar{height:46px;flex:none;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid var(--line);background:#0f1728}.toolbar .divider{height:22px;width:1px;background:var(--line);margin:0 4px}.toolbar-label{color:var(--muted);font-size:11px;margin-right:3px}.tool-active{background:#6458b8!important;border-color:#958aff!important}
+.main{flex:1;min-height:0;display:grid;grid-template-columns:220px minmax(260px,1fr) 260px;gap:1px;background:var(--line)}
+.panel{min-width:0;min-height:0;background:var(--surface);display:flex;flex-direction:column}.panel-head{height:38px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--line);font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#bdc9e0}.panel-body{padding:10px;overflow:auto;min-height:0;flex:1}.tree-row{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:7px;color:#d5def0;cursor:pointer;user-select:none}.tree-row:hover{background:#ffffff0b}.tree-row.selected{background:#7062d633;color:#fff}.tree-row .tree-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tree-actions{display:flex;gap:3px}.tree-actions button{background:transparent;color:var(--muted);padding:2px 5px;border-radius:4px}.tree-actions button:hover{background:#ffffff18;color:white}
+.center{display:flex;flex-direction:column;min-width:0;min-height:0;background:#0b1220}.center-tabs{height:38px;display:flex;align-items:stretch;border-bottom:1px solid var(--line);background:#10192a}.tab{padding:0 16px;background:transparent;color:var(--muted);border-bottom:2px solid transparent;font-weight:600}.tab.active{color:white;border-bottom-color:var(--accent);background:#ffffff06}.viewport-wrap{flex:1;min-height:180px;position:relative;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;background:radial-gradient(ellipse at center,#17223a 0%,#0a1120 75%)}#gameCanvas{display:block;max-width:100%;max-height:100%;width:min(100%,900px);height:auto;aspect-ratio:16/9;background:#111827;border:1px solid #ffffff20;border-radius:5px;box-shadow:0 12px 40px #0008;touch-action:none}.viewport-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:10px;color:#8795b1;background:#101827cc;padding:5px 9px;border-radius:20px;pointer-events:none;white-space:nowrap}.console{height:145px;flex:none;border-top:1px solid var(--line);display:flex;flex-direction:column;background:#0a101d}.console-head{height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 11px;border-bottom:1px solid var(--line);color:#aebbd3;font-size:11px;font-weight:700}.console-output{flex:1;overflow:auto;padding:8px 11px;font:11px/1.6 'DM Mono',monospace;color:#a8e8c7;white-space:pre-wrap}.console-line.error{color:#ff8d9b}.console-line.info{color:#a6b6d4}.console-line.warn{color:#ffd18a}
+.inspector-section{padding:11px 0;border-bottom:1px solid var(--line)}.inspector-section:first-child{padding-top:2px}.section-title{font-size:10px;color:#a8b5cd;text-transform:uppercase;letter-spacing:.7px;font-weight:700;margin-bottom:10px}.field-label{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.field{width:100%;min-width:0;background:#0b1322;border:1px solid var(--line);border-radius:7px;color:var(--text);padding:8px 9px;outline:none}.field:focus{border-color:var(--accent)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}.field-wrap{min-width:0}.color-field{height:32px;width:100%;padding:2px;background:#0b1322;border:1px solid var(--line);border-radius:7px}.empty-state{color:var(--muted);text-align:center;padding:26px 12px;font-size:12px;line-height:1.6}
+.bottom{height:28px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-top:1px solid var(--line);background:#0d1424;color:var(--muted);font-size:10px}.bottom span{display:flex;align-items:center;gap:6px}
+.script-view{display:none;flex:1;min-height:0;flex-direction:column;background:#0b1220}.script-toolbar{height:40px;display:flex;align-items:center;gap:7px;padding:0 10px;border-bottom:1px solid var(--line)}.script-editor-wrap{display:flex;flex:1;min-height:0;overflow:hidden}.line-numbers{width:42px;flex:none;overflow:hidden;text-align:right;padding:12px 9px;color:#566681;background:#0a101d;font:12px/1.65 'DM Mono',monospace;user-select:none}.code-editor{flex:1;min-width:0;resize:none;border:0;outline:0;background:#0b1220;color:#dbe6ff;padding:12px 14px;font:12px/1.65 'DM Mono',monospace;tab-size:4;white-space:pre;overflow:auto}.script-footer{padding:6px 11px;color:var(--muted);border-top:1px solid var(--line);font-size:10px}
+.mobile-nav{display:none}
+.modal-backdrop{position:fixed;inset:0;z-index:20;background:#0009;display:grid;place-items:center;padding:16px}.modal{width:min(440px,100%);background:#151f33;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px}.modal h3{margin:0 0 8px;font-size:17px}.modal p{color:var(--muted);line-height:1.5}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:900px){.main{grid-template-columns:180px minmax(240px,1fr)}.inspector{display:none}.topbar{gap:8px;padding:0 10px}.project-name{display:none}.status{display:none}}
+@media(max-width:620px){.topbar{height:48px}.brand{font-size:13px}.toolbar{height:44px;padding:0 7px;gap:4px;overflow-x:auto}.toolbar .btn{padding:7px 8px;font-size:11px;white-space:nowrap}.toolbar .divider{display:none}.main{display:flex;flex-direction:column;gap:0}.left-panel,.inspector{display:none}.center{flex:1}.center-tabs{height:36px}.tab{padding:0 12px;font-size:11px}.viewport-wrap{padding:7px;min-height:150px}.console{height:112px}.bottom{height:25px}.mobile-nav{display:flex;gap:6px;position:fixed;bottom:34px;left:50%;transform:translateX(-50%);z-index:9;background:#172238ed;border:1px solid var(--line);padding:5px;border-radius:12px;box-shadow:var(--shadow)}.mobile-nav button{padding:7px 10px;background:transparent;border-radius:7px;color:var(--muted);font-size:11px}.mobile-nav button.active{background:#6f62cf;color:white}.viewport-hint{bottom:8px;font-size:9px}.script-editor-wrap{min-height:200px}.script-toolbar{height:36px}}
+</style>
+</head>
 <body>
-<div id="desktop">
- <div id="topbar"><div class="brand">✦ YES OS</div><div class="status"><span id="topDate"></span><span>◉ Connected</span><span>⌁ 100%</span></div></div>
- <div id="desktopIcons">
-  <button class="desk-icon" data-app="files"><span class="glyph">📁</span><small>Files</small></button>
-  <button class="desk-icon" data-app="notes"><span class="glyph">📝</span><small>Notes</small></button>
-  <button class="desk-icon" data-app="calculator"><span class="glyph">🧮</span><small>Calculator</small></button>
-  <button class="desk-icon" data-app="terminal"><span class="glyph">⌨️</span><small>Terminal</small></button>
- </div>
- <div id="windows"></div>
- <div id="startMenu"><div class="start-head"><strong>YES OS Launcher</strong><span class="muted">Apps</span></div><input class="search" id="appSearch" placeholder="Search apps..."><div class="app-grid" id="appGrid"></div></div>
- <div id="dock">
-  <button class="dock-btn" id="startBtn" title="Launcher">✦</button>
-  <button class="dock-btn" data-app="files" title="Files">📁</button>
-  <button class="dock-btn" data-app="notes" title="Notes">📝</button>
-  <button class="dock-btn" data-app="calculator" title="Calculator">🧮</button>
-  <button class="dock-btn" data-app="terminal" title="Terminal">⌨️</button>
-  <button class="dock-btn" data-app="settings" title="Settings">⚙️</button>
- </div>
- <div id="toast" class="toast hidden"></div>
+<div id="app">
+<header class="topbar">
+ <div class="brand"><span class="brand-mark">Y</span> YES ENGINE</div><div class="project-name" id="projectName">Untitled Project</div>
+ <div class="top-spacer"></div><div class="status" id="runtimeStatus">● Lua runtime loading…</div>
+ <button class="btn small" id="newProjectBtn">＋ New</button><button class="btn small" id="saveBtn">↧ Save</button>
+</header>
+<div class="toolbar">
+ <button class="btn play" id="playBtn">▶ Play</button><button class="btn" id="stopBtn" disabled>■ Stop</button>
+ <span class="divider"></span><span class="toolbar-label">CREATE</span>
+ <button class="btn" id="addBoxBtn">▣ Box</button><button class="btn" id="addCircleBtn">● Circle</button><button class="btn" id="addTextBtn">T Text</button>
+ <span class="divider"></span><button class="btn" id="scriptBtn">⌘ Script</button><button class="btn" id="exportBtn">⇩ Export</button>
+ <button class="btn" id="importBtn">⇧ Import</button><input type="file" id="importFile" accept=".json,.yesgame,application/json" hidden>
 </div>
-<script>
-'use strict';
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const APPS={
- files:{name:'File Manager',icon:'📁',width:620,render:filesUI},
- notes:{name:'Notes',icon:'📝',width:600,render:notesUI},
- calculator:{name:'Calculator',icon:'🧮',width:360,render:calcUI},
- terminal:{name:'Terminal',icon:'⌨️',width:570,render:terminalUI},
- settings:{name:'Settings',icon:'⚙️',width:540,render:settingsUI},
- about:{name:'About YES OS',icon:'✦',width:430,render:aboutUI}
-};
-let z=10,winSeq=0,windows=new Map(),active=null;
-const store={get(k,d){try{const v=localStorage.getItem('yesos:'+k);return v===null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem('yesos:'+k,JSON.stringify(v))}catch{notify('Storage unavailable in this browser')}}};
-function notify(msg){const t=$('#toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.classList.add('hidden'),2400)}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function openApp(id){if(!APPS[id])return;const existing=[...windows.values()].find(w=>w.app===id&&!w.closed);if(existing){if(existing.min){existing.el.classList.remove('hidden');existing.min=false}focus(existing.id);return}
- const app=APPS[id],wid='w'+(++winSeq),el=document.createElement('section');el.className='window';el.dataset.id=wid;el.style.width=`min(${app.width}px, calc(100vw - 24px))`;el.style.height=id==='calculator'?'450px':'min(520px, calc(100% - 20px))';el.style.left=`calc(50% + ${(windows.size%4)*16}px)`;el.style.top=`${7+(windows.size%4)*4}%`;
- el.innerHTML=`<div class="titlebar"><div class="win-title"><span>${app.icon}</span>${app.name}</div><div class="win-actions"><button data-action="min" title="Minimize">−</button><button data-action="max" title="Maximize">□</button><button class="close" data-action="close" title="Close">×</button></div></div><div class="content">${app.render()}</div>`;
- $('#windows').append(el);const obj={id:wid,app:id,el,min:false,max:false,closed:false};windows.set(wid,obj);wireWindow(obj);focus(wid);if(id==='terminal')initTerminal(el);if(id==='notes')initNotes(el);if(id==='settings')initSettings(el);if(id==='files')initFiles(el);
+<main class="main">
+ <aside class="panel left-panel">
+  <div class="panel-head"><span>Scene</span><button class="btn small" id="addObjectBtn">＋</button></div>
+  <div class="panel-body" id="hierarchy"></div>
+ </aside>
+ <section class="center">
+  <div class="center-tabs"><button class="tab active" data-tab="scene">Scene</button><button class="tab" data-tab="script">Lua Script</button></div>
+  <div class="viewport-wrap" id="sceneView"><canvas id="gameCanvas" width="960" height="540" aria-label="Game scene editor"></canvas><div class="viewport-hint">Select objects · Drag to move · ▶ Play to run</div></div>
+  <div class="script-view" id="scriptView">
+   <div class="script-toolbar"><span style="color:#9eaed0;font-size:11px">📄 main.lua</span><div class="top-spacer"></div><button class="btn small" id="resetCodeBtn">Reset example</button><button class="btn small primary" id="runCodeBtn">▶ Run Lua</button></div>
+   <div class="script-editor-wrap"><div class="line-numbers" id="lineNumbers">1</div><textarea class="code-editor" id="codeEditor" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></div>
+   <div class="script-footer">Lua 5.4 · Wasmoon WebAssembly runtime · Tab inserts spaces · Ctrl/⌘ + Enter runs</div>
+  </div>
+  <div class="console"><div class="console-head"><span>▣ OUTPUT CONSOLE</span><button class="btn small" id="clearConsoleBtn">Clear</button></div><div class="console-output" id="consoleOutput"><div class="console-line info">YES Engine ready. Loading Lua runtime…</div></div></div>
+ </section>
+ <aside class="panel inspector">
+  <div class="panel-head">Inspector</div><div class="panel-body" id="inspector"><div class="empty-state">Select an object in the scene to edit its properties.</div></div>
+ </aside>
+</main>
+<nav class="mobile-nav"><button data-mobile="scene" class="active">▦ Scene</button><button data-mobile="hierarchy">☷ Objects</button><button data-mobile="inspector">⚙ Inspect</button><button data-mobile="script">⌘ Lua</button></nav>
+<footer class="bottom"><span id="bottomLeft">● Editor ready</span><span>YES Engine 0.9 · Browser Studio</span></footer>
+</div>
+<div id="modalRoot"></div>
+<script type="module">
+import { LuaFactory } from "https://cdn.jsdelivr.net/npm/wasmoon@1.16.0/+esm";
+
+const $ = s => document.querySelector(s);
+const canvas = $('#gameCanvas');
+const ctx = canvas.getContext('2d');
+const STORE_KEY = 'yes-engine-project-v1';
+const DEFAULT_CODE = `-- YES Engine · Lua 5.4
+-- Available: spawn_box, set_position, set_velocity, set_color, set_gravity,
+-- set_text, destroy_object, get_position, is_key_down, log, random
+
+local player = nil
+
+function on_start()
+    log("Hello from Lua! Game started.")
+    player = spawn_box("Player", 440, 230, 80, 80, "#8b7cff")
+    set_velocity(player, 110, 0)
+end
+
+function on_update(dt)
+    -- Move the player with WASD or arrow keys
+    local x, y = get_x(player), get_y(player)
+    local speed = 190
+
+    if is_key_down("a") or is_key_down("arrowleft") then
+        x = x - speed * dt
+    end
+    if is_key_down("d") or is_key_down("arrowright") then
+        x = x + speed * dt
+    end
+    if is_key_down("w") or is_key_down("arrowup") then
+        y = y - speed * dt
+    end
+    if is_key_down("s") or is_key_down("arrowdown") then
+        y = y + speed * dt
+    end
+
+    set_position(player, x, y)
+end
+`;
+let objects = [];
+let selectedId = null;
+let nextId = 1;
+let luaFactory = null, luaEngine = null, luaReady = false, luaRunning = false;
+let raf = 0, lastFrame = 0, lastLuaFrame = 0, luaPaused = false, playSnapshot = null;
+let keys = new Set();
+let gravity = 0;
+let pointerState = {x:0,y:0,down:false};
+let currentTab = 'scene';
+let projectName = 'Untitled Project';
+let dragging = null;
+let savedSnapshot = null;
+
+function uid(){ return 'obj_'+(nextId++); }
+function refreshNextId(){nextId=Math.max(1,...objects.map(o=>Number(String(o.id).match(/^obj_(\d+)$/)?.[1]||0)+1));}
+function clone(v){ return JSON.parse(JSON.stringify(v)); }
+function safeName(v){ return String(v ?? '').slice(0,80); }
+function log(message, type='info'){
+ const row=document.createElement('div');row.className='console-line '+type;row.textContent=String(message);
+ $('#consoleOutput').append(row);$('#consoleOutput').scrollTop=$('#consoleOutput').scrollHeight;
 }
-function focus(id){const w=windows.get(id);if(!w)return;active=id;windows.forEach(x=>x.el.classList.toggle('focus',x.id===id));w.el.style.zIndex=++z;$$('.dock-btn[data-app]').forEach(b=>b.classList.toggle('active',b.dataset.app===w.app))}
-function wireWindow(w){const el=w.el;el.addEventListener('pointerdown',()=>focus(w.id));el.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const a=b.dataset.action;if(a==='close'){el.remove();w.closed=true;windows.delete(w.id)}if(a==='min'){el.classList.add('hidden');w.min=true}if(a==='max'){w.max=!w.max;el.classList.toggle('max',w.max)}}));
- const bar=el.querySelector('.titlebar');let drag=null;bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||w.max||innerWidth<600)return;focus(w.id);const r=el.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top};bar.setPointerCapture(e.pointerId)});bar.addEventListener('pointermove',e=>{if(!drag)return;const x=Math.max(0,Math.min(innerWidth-el.offsetWidth,e.clientX-drag.x));const y=Math.max(35,Math.min(innerHeight-110,e.clientY-drag.y));el.style.left=x+'px';el.style.top=(y-35)+'px';el.style.transform='none'});bar.addEventListener('pointerup',()=>drag=null);bar.addEventListener('lostpointercapture',()=>drag=null);
+function setStatus(text,good=false){$('#runtimeStatus').textContent=(good?'● ':'○ ')+text;$('#runtimeStatus').style.color=good?'var(--green)':'var(--yellow)';}
+function makeObject(type='box', name){
+ const o={id:uid(),name:name||({box:'Box',circle:'Circle',text:'Text'}[type]||'Object'),type,x:400+Math.round(Math.random()*100),y:210+Math.round(Math.random()*70),w:type==='text'?180:70,h:type==='text'?38:70,color:type==='circle'?'#40c9a2':type==='text'?'#f4f6ff':'#8b7cff',text:type==='text'?'Hello YES Engine':'',vx:0,vy:0,visible:true};
+ objects.push(o);selectedId=o.id;renderAll();return o;
 }
-function filesUI(){return `<div class="toolbar"><button class="btn primary" id="newFile">＋ New note</button><span class="muted">Local files · stored in this browser</span></div><div id="fileList"></div>`}
-function initFiles(el){const list=el.querySelector('#fileList');function draw(){const notes=store.get('notes',[]);list.innerHTML=notes.length?notes.map(n=>`<div class="file-row"><span class="file-icon">📄</span><span class="file-name">${esc(n.title||'Untitled note')}<br><small class="muted">${new Date(n.updated||Date.now()).toLocaleString()}</small></span><button data-open="${esc(n.id)}">Open</button><button data-del="${esc(n.id)}">Delete</button></div>`).join(''):'<p class="muted">No saved notes yet. Create one to get started.</p>'}
- el.querySelector('#newFile').onclick=()=>{const notes=store.get('notes',[]),id='n'+Date.now();notes.unshift({id,title:'Untitled note',body:'',updated:Date.now()});store.set('notes',notes);draw();openApp('notes')};list.addEventListener('click',e=>{const op=e.target.dataset.open,del=e.target.dataset.del;if(op){store.set('openNote',op);openApp('notes')}if(del){store.set('notes',store.get('notes',[]).filter(n=>n.id!==del));draw();notify('Note deleted')}});draw()}
-function notesUI(){return `<div class="toolbar"><input class="field" id="noteTitle" placeholder="Note title" style="flex:1"><span class="muted" id="saveStatus">Saved locally</span></div><textarea class="note-area" id="noteBody" placeholder="Start writing..."></textarea>`}
-function initNotes(el){const title=el.querySelector('#noteTitle'),body=el.querySelector('#noteBody'),notes=store.get('notes',[]);let id=store.get('openNote',null),n=notes.find(x=>x.id===id);if(!n){id='n'+Date.now();n={id,title:'',body:'',updated:Date.now()};notes.unshift(n);store.set('notes',notes);store.set('openNote',id)}title.value=n.title;body.value=n.body;let timer;function save(){const all=store.get('notes',[]),idx=all.findIndex(x=>x.id===id),entry={id,title:title.value||'Untitled note',body:body.value,updated:Date.now()};if(idx>=0)all[idx]=entry;else all.unshift(entry);store.set('notes',all);el.querySelector('#saveStatus').textContent='Saved';}function changed(){el.querySelector('#saveStatus').textContent='Saving…';clearTimeout(timer);timer=setTimeout(save,250)}title.addEventListener('input',changed);body.addEventListener('input',changed);el.querySelector('.content').addEventListener('focusout',save)}
-function calcUI(){return `<div class="calc"><div class="calc-display" id="calcDisplay" aria-live="polite">0</div><div class="calc-grid">${['C','⌫','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','±','0','.','='].map((x,i)=>`<button class="${[3,7,11,15].includes(i)?'op':''} ${x==='='?'equal':''}" data-key="${x}">${x}</button>`).join('')}</div></div>`}
-function terminalUI(){return `<div class="terminal"><div class="terminal-out" id="termOut">YES OS Terminal 1.0\nType <b>help</b> to see available commands.\n</div><form class="terminal-form" id="termForm"><span>visitor@yesos:~$</span><input id="termInput" autocomplete="off" spellcheck="false" aria-label="Terminal command"></form></div>`}
-function initTerminal(el){const out=el.querySelector('#termOut'),form=el.querySelector('#termForm'),input=el.querySelector('#termInput');const print=s=>{out.innerHTML+=esc(s)+'\n';out.scrollTop=out.scrollHeight};form.addEventListener('submit',e=>{e.preventDefault();const cmd=input.value.trim();input.value='';print('visitor@yesos:~$ '+cmd);const [c,...args]=cmd.split(/\s+/);switch(c.toLowerCase()){case'':break;case'help':print('help  about  date  clear  echo [text]  apps  whoami');break;case'about':print('YES OS — a lightweight browser desktop.');break;case'date':print(new Date().toString());break;case'clear':out.textContent='';break;case'echo':print(args.join(' '));break;case'apps':print(Object.keys(APPS).join(', '));break;case'whoami':print('visitor');break;default:print('Command not found: '+c+'. Type help.')}})}
-function settingsUI(){return `<h3 style="margin-top:0">Personalization</h3><div class="settings-row"><div><b>Light appearance</b><div class="muted">Switch between dark and light mode</div></div><input class="switch" type="checkbox" id="lightToggle"></div><div class="settings-row"><div><b>Accent color</b><div class="muted">Change interface highlight</div></div><input type="color" id="accentColor" value="${esc(store.get('accent','#8b7cff'))}" style="width:40px;height:30px;background:transparent;border:0"></div><div class="settings-row"><div><b>Reset settings</b><div class="muted">Restore default appearance</div></div><button class="btn" id="resetSettings">Reset</button></div><p class="muted">YES OS runs locally in your browser. Notes and preferences stay in this browser's local storage.</p>`}
-function initSettings(el){const light=el.querySelector('#lightToggle'),color=el.querySelector('#accentColor');light.checked=store.get('light',false);light.onchange=()=>{store.set('light',light.checked);document.body.classList.toggle('light',light.checked)};color.oninput=()=>{store.set('accent',color.value);document.documentElement.style.setProperty('--accent',color.value)};el.querySelector('#resetSettings').onclick=()=>{store.set('light',false);store.set('accent','#8b7cff');document.body.classList.remove('light');document.documentElement.style.setProperty('--accent','#8b7cff');light.checked=false;color.value='#8b7cff';notify('Settings reset')}}
-function aboutUI(){return `<div style="text-align:center;padding:15px"><div style="font-size:52px">✦</div><h2>YES OS</h2><p class="muted">A tiny desktop environment in one HTML file.</p><p>Version 1.0 · Browser edition</p><p class="muted">Built with HTML, CSS and vanilla JavaScript. No server required.</p></div>`}
-function initClock(){const tick=()=>{$('#topDate').textContent=new Date().toLocaleString([],{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})};tick();setInterval(tick,1000)}
-function initCalc(){let expr='0',fresh=true;const display=()=>$('#calcDisplay')&&($('#calcDisplay').textContent=expr);$('#windows').addEventListener('click',e=>{const b=e.target.closest('[data-key]');if(!b)return;const k=b.dataset.key;try{if(k==='C'){expr='0';fresh=true}else if(k==='⌫'){expr=expr.length>1?expr.slice(0,-1):'0'}else if(k==='±'){expr=String(-Number(expr))}else if(k==='='){const safe=expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');if(!/^[0-9+\-*/%.() ]+$/.test(safe))throw Error();const result=Function('"use strict";return ('+safe+')')();if(!Number.isFinite(result))throw Error();expr=String(Number(result.toPrecision(12)));fresh=true}else if(k==='%'){expr=String(Number(expr)/100)}else{if(fresh&&/[0-9.]/.test(k))expr='';expr=(expr==='0'&&/[0-9]/.test(k))?k:expr+k;fresh=false}display()}catch{expr='Error';fresh=true;display()}})}
-function buildLauncher(){const grid=$('#appGrid');function render(q=''){grid.innerHTML=Object.entries(APPS).filter(([id,a])=>(id+' '+a.name).toLowerCase().includes(q.toLowerCase())).map(([id,a])=>`<button class="app-tile" data-launch="${id}"><span>${a.icon}</span><small>${a.name}</small></button>`).join('')||'<p class="muted">No apps found.</p>'}render();$('#appSearch').addEventListener('input',e=>render(e.target.value));grid.addEventListener('click',e=>{const b=e.target.closest('[data-launch]');if(b){openApp(b.dataset.launch);$('#startMenu').classList.remove('show')}})}
-$('#startBtn').addEventListener('click',()=>$('#startMenu').classList.toggle('show'));$$('[data-app]').forEach(b=>b.addEventListener('click',()=>openApp(b.dataset.app)));$('#desktop').addEventListener('dblclick',e=>{const b=e.target.closest('[data-app]');if(b)openApp(b.dataset.app)});document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#startMenu').classList.add('show');$('#appSearch').focus()}if(e.key==='Escape')$('#startMenu').classList.remove('show');if(e.altKey&&e.key==='F4'&&active){e.preventDefault();const w=windows.get(active);if(w){w.el.remove();windows.delete(active);active=null}}});
-document.addEventListener('click',e=>{if(!e.target.closest('#startMenu,#startBtn'))$('#startMenu').classList.remove('show')});
-document.body.classList.toggle('light',store.get('light',false));document.documentElement.style.setProperty('--accent',store.get('accent','#8b7cff'));buildLauncher();initClock();initCalc();openApp('about');
-</script></body></html>
+function selected(){return objects.find(o=>o.id===selectedId)||null;}
+function renderAll(){renderHierarchy();renderInspector();drawScene();}
+function renderHierarchy(){
+ const host=$('#hierarchy');
+ host.innerHTML=objects.length?objects.map(o=>`<div class="tree-row ${o.id===selectedId?'selected':''}" data-id="${o.id}"><span>${o.type==='circle'?'◉':o.type==='text'?'T':'▣'}</span><span class="tree-name">${escapeHTML(o.name)}</span><div class="tree-actions"><button data-delete="${o.id}" title="Delete">×</button></div></div>`).join(''):'<div class="empty-state">Your scene is empty.<br>Use + or the create buttons to add objects.</div>';
+}
+function escapeHTML(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderInspector(){
+ const host=$('#inspector'),o=selected();
+ if(!o){host.innerHTML='<div class="empty-state">Select an object in the scene to edit its properties.</div>';return;}
+ host.innerHTML=`
+ <div class="inspector-section"><div class="section-title">Object</div><label class="field-label">Name</label><input class="field" data-prop="name" value="${escapeHTML(o.name)}"><div style="height:9px"></div><label class="field-label">Type</label><input class="field" value="${o.type}" disabled></div>
+ <div class="inspector-section"><div class="section-title">Transform · position</div><div class="field-grid"><div class="field-wrap"><label class="field-label">X</label><input class="field" type="number" data-prop="x" value="${o.x}"></div><div class="field-wrap"><label class="field-label">Y</label><input class="field" type="number" data-prop="y" value="${o.y}"></div><div class="field-wrap"><label class="field-label">Width</label><input class="field" type="number" min="1" data-prop="w" value="${o.w}"></div><div class="field-wrap"><label class="field-label">Height</label><input class="field" type="number" min="1" data-prop="h" value="${o.h}"></div></div></div>
+ <div class="inspector-section"><div class="section-title">Appearance</div><label class="field-label">Color</label><input class="color-field" type="color" data-prop="color" value="${/^#[0-9a-f]{6}$/i.test(o.color)?o.color:'#ffffff'}"><div style="height:9px"></div>${o.type==='text'?`<label class="field-label">Text content</label><input class="field" data-prop="text" value="${escapeHTML(o.text)}">`:''}<div style="height:9px"></div><label style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px"><input type="checkbox" data-prop="visible" ${o.visible?'checked':''}> Visible</label></div>
+ <div class="inspector-section"><button class="btn danger" id="deleteSelected" style="width:100%">Delete object</button></div>`;
+ host.querySelectorAll('[data-prop]').forEach(el=>el.addEventListener('input',()=>{
+  const key=el.dataset.prop;let value=key==='visible'?el.checked:el.value;
+  if(['x','y','w','h'].includes(key)){value=Number(value);if(!Number.isFinite(value))return;if((key==='w'||key==='h')&&value<1)value=1;}
+  o[key]=value;drawScene();if(key==='name')renderHierarchy();
+ }));
+ $('#deleteSelected').onclick=()=>deleteObject(o.id);
+}
+function deleteObject(id){objects=objects.filter(o=>o.id!==id);if(selectedId===id)selectedId=objects[0]?.id||null;renderAll();}
+function drawScene(){
+ const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);ctx.fillStyle='#111b2d';ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.strokeStyle='#ffffff0c';ctx.lineWidth=1;for(let x=0;x<=w;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}for(let y=0;y<=h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}ctx.restore();
+ for(const o of objects){if(!o.visible)continue;ctx.save();ctx.fillStyle=o.color;ctx.strokeStyle=o.id===selectedId?'#f5f2ff':'#ffffff22';ctx.lineWidth=o.id===selectedId?2:1;
+  if(o.type==='circle'){ctx.beginPath();ctx.ellipse(o.x+o.w/2,o.y+o.h/2,Math.max(1,o.w/2),Math.max(1,o.h/2),0,0,Math.PI*2);ctx.fill();ctx.stroke()}
+  else if(o.type==='text'){ctx.font='600 24px DM Sans, sans-serif';ctx.textBaseline='top';ctx.fillStyle=o.color;ctx.fillText(o.text||'',o.x,o.y);if(o.id===selectedId){ctx.strokeStyle='#f5f2ff';ctx.strokeRect(o.x-3,o.y-3,o.w,o.h)}}
+  else{ctx.fillRect(o.x,o.y,o.w,o.h);ctx.strokeRect(o.x,o.y,o.w,o.h)}
+  if(o.id===selectedId){ctx.setLineDash([5,4]);ctx.strokeStyle='#c6bcff';ctx.lineWidth=1;ctx.strokeRect(o.x-5,o.y-5,o.w+10,o.h+10);ctx.setLineDash([])}
+  ctx.restore();
+ }
+}
+function canvasPoint(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};}
+function hitTest(p){for(let i=objects.length-1;i>=0;i--){const o=objects[i];if(!o.visible)continue;const ww=o.type==='text'?Math.max(o.w,80):o.w,hh=o.type==='text'?Math.max(o.h,30):o.h;if(p.x>=o.x&&p.x<=o.x+ww&&p.y>=o.y&&p.y<=o.y+hh)return o;}return null;}
+canvas.addEventListener('pointerdown',e=>{const p=canvasPoint(e);pointerState={...p,down:true};const o=hitTest(p);selectedId=o?.id||null;dragging=o?{id:o.id,dx:p.x-o.x,dy:p.y-o.y}:null;canvas.setPointerCapture(e.pointerId);renderAll();});
+canvas.addEventListener('pointermove',e=>{const p=canvasPoint(e);pointerState.x=p.x;pointerState.y=p.y;if(!dragging)return;const o=objects.find(x=>x.id===dragging.id);if(!o)return;o.x=Math.round(p.x-dragging.dx);o.y=Math.round(p.y-dragging.dy);drawScene();});
+canvas.addEventListener('pointerup',()=>{dragging=null;pointerState.down=false});canvas.addEventListener('pointercancel',()=>{dragging=null;pointerState.down=false});
+$('#hierarchy').addEventListener('click',e=>{const del=e.target.closest('[data-delete]');if(del){deleteObject(del.dataset.delete);return;}const row=e.target.closest('[data-id]');if(row){selectedId=row.dataset.id;renderAll();}});
+$('#addBoxBtn').onclick=()=>makeObject('box');$('#addCircleBtn').onclick=()=>makeObject('circle');$('#addTextBtn').onclick=()=>makeObject('text');$('#addObjectBtn').onclick=()=>makeObject('box');
+function showTab(tab){currentTab=tab;$$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));$('#sceneView').style.display=tab==='scene'?'flex':'none';$('#scriptView').style.display=tab==='script'?'flex':'none';$$('[data-mobile]').forEach(b=>b.classList.toggle('active',b.dataset.mobile===tab));}
+const $$=s=>[...document.querySelectorAll(s)];
+$$('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+$$('[data-mobile]').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.mobile;$('.left-panel').classList.remove('mobile-drawer');$('.inspector').classList.remove('mobile-drawer');if(t==='hierarchy'){$('.left-panel').classList.add('mobile-drawer');return;}if(t==='inspector'){$('.inspector').classList.add('mobile-drawer');return;}showTab(t)}));
+$('#scriptBtn').onclick=()=>showTab('script');
+const codeEditor=$('#codeEditor');
+codeEditor.value=localStorage.getItem('yes-engine-lua')||DEFAULT_CODE;
+function updateLineNumbers(){const count=codeEditor.value.split('\n').length;$('#lineNumbers').textContent=Array.from({length:count},(_,i)=>i+1).join('\n');}
+codeEditor.addEventListener('input',()=>{updateLineNumbers();try{localStorage.setItem('yes-engine-lua',codeEditor.value)}catch{}});
+codeEditor.addEventListener('scroll',()=>{$('#lineNumbers').scrollTop=codeEditor.scrollTop});
+codeEditor.addEventListener('keydown',e=>{if(e.key==='Tab'){e.preventDefault();const a=codeEditor.selectionStart,b=codeEditor.selectionEnd;codeEditor.setRangeText('    ',a,b,'end');codeEditor.dispatchEvent(new Event('input'));}if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();runLua();}});
+$('#resetCodeBtn').onclick=()=>{codeEditor.value=DEFAULT_CODE;updateLineNumbers();localStorage.setItem('yes-engine-lua',DEFAULT_CODE);notify('Example script restored')};
+function bridgeLua(engine){
+ const find=id=>objects.find(o=>o.id===String(id));
+ engine.global.set('log',(msg)=>log(String(msg),'info'));
+ engine.global.set('spawn_box',(name,x,y,w,h,color)=>{const o={id:uid(),name:safeName(name)||'Box',type:'box',x:Number(x)||0,y:Number(y)||0,w:Math.max(1,Number(w)||50),h:Math.max(1,Number(h)||50),color:String(color||'#8b7cff'),text:'',vx:0,vy:0,visible:true};objects.push(o);renderHierarchy();return o.id;});
+ engine.global.set('spawn_circle',(name,x,y,r,color)=>{const o={id:uid(),name:safeName(name)||'Circle',type:'circle',x:Number(x)||0,y:Number(y)||0,w:Math.max(1,Number(r)||25)*2,h:Math.max(1,Number(r)||25)*2,color:String(color||'#40c9a2'),text:'',vx:0,vy:0,visible:true};objects.push(o);renderHierarchy();return o.id;});
+ engine.global.set('set_position',(id,x,y)=>{const o=find(id);if(o){o.x=Number(x)||0;o.y=Number(y)||0;}});
+ engine.global.set('get_position',(id)=>{const o=find(id);return o?[o.x,o.y]:[0,0]});
+ engine.global.set('get_x',(id)=>find(id)?.x??0);
+ engine.global.set('get_y',(id)=>find(id)?.y??0);
+ engine.global.set('set_velocity',(id,x,y)=>{const o=find(id);if(o){o.vx=Number(x)||0;o.vy=Number(y)||0;}});
+ engine.global.set('apply_force',(id,x,y)=>{const o=find(id);if(o){o.vx+=Number(x)||0;o.vy+=Number(y)||0;}});
+ engine.global.set('set_gravity',(value)=>{gravity=Number(value)||0;});
+ engine.global.set('is_colliding',(a,b)=>{const x=find(a),y=find(b);return !!(x&&y&&x.x<y.x+y.w&&x.x+x.w>y.x&&x.y<y.y+y.h&&x.y+x.h>y.y);});
+ engine.global.set('mouse_x',()=>pointerState.x);
+ engine.global.set('mouse_y',()=>pointerState.y);
+ engine.global.set('is_mouse_down',()=>pointerState.down);
+ engine.global.set('set_color',(id,color)=>{const o=find(id);if(o)o.color=String(color)});
+ engine.global.set('set_text',(id,text)=>{const o=find(id);if(o){o.text=String(text);o.type='text';}});
+ engine.global.set('destroy_object',(id)=>{const o=find(id);if(o)deleteObject(o.id)});
+ engine.global.set('is_key_down',(key)=>keys.has(String(key).toLowerCase()));
+ engine.global.set('random',(min,max)=>{min=Number(min)||0;max=Number(max)||1;return Math.random()*(max-min)+min;});
+ engine.global.set('set_visible',(id,v)=>{const o=find(id);if(o)o.visible=!!v;});
+}
+async function ensureLua(){
+ if(luaReady&&luaEngine)return luaEngine;
+ setStatus('Loading Lua 5.4…');log('Initializing Lua 5.4 WebAssembly runtime…','info');
+ luaFactory=luaFactory||new LuaFactory();
+ luaEngine=await luaFactory.createEngine();
+ bridgeLua(luaEngine);
+ luaReady=true;setStatus('Lua 5.4 ready',true);log('Lua 5.4 runtime initialized successfully.','info');return luaEngine;
+}
+async function runLua(){
+ try{
+  if(luaRunning||luaPaused)stopGame(false);
+  if(luaEngine){try{luaEngine.global.close()}catch{}luaEngine=null;luaReady=false;}
+  const engine=await ensureLua();
+  const source=codeEditor.value;
+  playSnapshot=clone(objects);
+  await engine.doString(source);
+  const start=engine.global.get('on_start');if(typeof start==='function')start();
+  luaRunning=true;luaPaused=false;lastFrame=performance.now();lastLuaFrame=0;
+  $('#playBtn').textContent='Ⅱ Pause';$('#playBtn').classList.add('tool-active');$('#stopBtn').disabled=false;
+  log('Lua script executed. Game is running.','info');$('#bottomLeft').textContent='▶ Game running';renderHierarchy();drawScene();startLoop();
+ }catch(err){log(err?.message||err,'error');setStatus('Lua script error');stopGame(false);}
+}
+function stopGame(clearRuntime=true){
+ luaRunning=false;luaPaused=false;cancelAnimationFrame(raf);$('#playBtn').textContent='▶ Play';$('#playBtn').classList.remove('tool-active');$('#stopBtn').disabled=true;$('#bottomLeft').textContent='■ Game stopped';
+ if(playSnapshot){objects=playSnapshot;playSnapshot=null;selectedId=objects.some(o=>o.id===selectedId)?selectedId:(objects[0]?.id||null);renderAll();}
+ if(clearRuntime&&luaEngine){try{luaEngine.global.close()}catch{}luaEngine=null;luaReady=false;setStatus('Lua runtime will reload');}
+ drawScene();
+}
+function startLoop(){cancelAnimationFrame(raf);const frame=now=>{if(!luaRunning)return;const dt=Math.min(.05,Math.max(0,(now-lastFrame)/1000));lastFrame=now;
+  for(const o of objects){o.vy+=gravity*dt;o.x+=o.vx*dt;o.y+=o.vy*dt;}
+  try{const update=luaEngine?.global.get('on_update');if(typeof update==='function')update(dt);}catch(err){log(err?.message||err,'error');stopGame(false);return;}
+  drawScene();raf=requestAnimationFrame(frame);
+ };raf=requestAnimationFrame(frame);}
+$('#runCodeBtn').onclick=runLua;
+$('#playBtn').onclick=()=>{if(luaRunning){luaRunning=false;luaPaused=true;cancelAnimationFrame(raf);$('#playBtn').textContent='▶ Resume';$('#bottomLeft').textContent='Ⅱ Game paused';}else if(luaPaused){luaPaused=false;luaRunning=true;lastFrame=performance.now();$('#playBtn').textContent='Ⅱ Pause';$('#bottomLeft').textContent='▶ Game running';startLoop();}else runLua();};
+$('#stopBtn').onclick=()=>stopGame(true);
+window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName))return;keys.add(e.key.toLowerCase());if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();});
+window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('.mobile-nav,.mobile-drawer')){$('.left-panel').classList.remove('mobile-drawer');$('.inspector').classList.remove('mobile-drawer');}});
+function snapshot(){return {format:'YES_ENGINE_PROJECT',version:1,name:projectName,objects:clone(objects),lua:codeEditor.value};}
+function saveProject(){try{const data=snapshot();localStorage.setItem(STORE_KEY,JSON.stringify(data));localStorage.setItem('yes-engine-lua',codeEditor.value);savedSnapshot=JSON.stringify(data);log('Project saved to this browser.','info');notify('Project saved locally');}catch(err){log('Save failed: '+err.message,'error');}}
+$('#saveBtn').onclick=saveProject;
+function download(filename,text,type='application/json'){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+$('#exportBtn').onclick=()=>{download((projectName.toLowerCase().replace(/[^a-z0-9]+/g,'-')||'yes-game')+'.yesgame',JSON.stringify(snapshot(),null,2));notify('Project exported');};
+$('#importBtn').onclick=()=>$('#importFile').click();
+$('#importFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='YES_ENGINE_PROJECT'||!Array.isArray(data.objects)||typeof data.lua!=='string')throw new Error('This is not a valid YES Engine project file.');objects=data.objects.map(o=>({...o,id:String(o.id||uid()),name:safeName(o.name),x:Number(o.x)||0,y:Number(o.y)||0,w:Math.max(1,Number(o.w)||50),h:Math.max(1,Number(o.h)||50)}));refreshNextId();selectedId=objects[0]?.id||null;projectName=safeName(data.name)||'Imported Project';$('#projectName').textContent=projectName;codeEditor.value=data.lua;updateLineNumbers();renderAll();saveProject();notify('Project imported');}catch(err){log(err.message,'error');}finally{e.target.value='';}});
+function notify(msg){const el=document.createElement('div');el.textContent=msg;el.style.cssText='position:fixed;z-index:40;bottom:48px;left:50%;transform:translateX(-50%);background:#202c46;border:1px solid #ffffff22;padding:10px 15px;border-radius:10px;box-shadow:var(--shadow);color:#fff';document.body.append(el);setTimeout(()=>el.remove(),2200);}
+function modal(title,body,onConfirm){const root=$('#modalRoot');root.innerHTML=`<div class="modal-backdrop"><div class="modal"><h3>${escapeHTML(title)}</h3><p>${body}</p><div class="modal-actions"><button class="btn" id="cancelModal">Cancel</button><button class="btn primary" id="confirmModal">Continue</button></div></div></div>`;root.querySelector('#cancelModal').onclick=()=>root.innerHTML='';root.querySelector('#confirmModal').onclick=()=>{root.innerHTML='';onConfirm();};}
+$('#newProjectBtn').onclick=()=>modal('Create a new project','This replaces the current scene in memory. Export or save your project first if you want to keep it.',()=>{stopGame(true);objects=[];selectedId=null;nextId=1;projectName='Untitled Project';$('#projectName').textContent=projectName;codeEditor.value=DEFAULT_CODE;updateLineNumbers();renderAll();log('New project created.','info');});
+function loadSaved(){try{const raw=localStorage.getItem(STORE_KEY);if(!raw)return;const d=JSON.parse(raw);if(d.format!=='YES_ENGINE_PROJECT'||!Array.isArray(d.objects))return;objects=d.objects;projectName=safeName(d.name)||projectName;$('#projectName').textContent=projectName;selectedId=objects[0]?.id||null;refreshNextId();if(typeof d.lua==='string')codeEditor.value=d.lua;}catch(err){log('Saved project could not be loaded: '+err.message,'warn');}}
+$('#clearConsoleBtn').onclick=()=>$('#consoleOutput').replaceChildren();
+function init(){
+ loadSaved();if(!objects.length){objects=[{id:uid(),name:'Ground',type:'box',x:100,y:440,w:760,h:35,color:'#293b58',text:'',vx:0,vy:0,visible:true},{id:uid(),name:'Welcome Text',type:'text',x:325,y:90,w:330,h:40,color:'#f0edff',text:'Your game starts here',vx:0,vy:0,visible:true}];selectedId=objects[1].id;}
+ updateLineNumbers();renderAll();setStatus('Connecting to Lua…');log('Scene editor initialized.','info');
+ ensureLua().catch(err=>{setStatus('Lua runtime unavailable');log('Could not load Lua runtime: '+(err?.message||err)+'. Check internet access and reload.','error');});
+}
+init();
+</script>
+</body></html>
